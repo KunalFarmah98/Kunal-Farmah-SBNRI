@@ -13,20 +13,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Permissions;
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context mContext;
-    List<Repo> data;
+    List<RepoModel> data;
     private static final int ITEM = 0;
     private static final int LOADING = 1;
     private boolean isLoadingAdded = false;
 
 
-    public RepoAdapter(Context mContext, List<Repo> list){
+    public RepoAdapter(Context mContext, List<RepoModel> list){
         this.mContext = mContext;
         data = list;
+    }
+
+    public RepoAdapter(Context mContext){
+        this.mContext=mContext;
+        this.data = new ArrayList<>();
     }
 
 
@@ -51,20 +58,19 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Repo repo = data.get(position);
+        RepoModel repo = data.get(position);
         if(ITEM==LOADING)return;
 
         RepoViewHolder vh = (RepoViewHolder)holder;
 
         vh.name.setText(repo.getName());
         vh.desc.setText(repo.getDescription());
-        vh.issues.setText(repo.getOpenIssues());
+        vh.issues.setText(repo.getOpen_cont());
 
-        Permissions p = repo.getPermissions();
         String perm ="";
-        if(p.isAdmin())perm+="Admin, ";
-        if(p.isPull())perm+="Pull, ";
-        if(p.isPush())perm+="Push, ";
+        if(repo.getAdmin())perm+="Admin, ";
+        if(repo.getPull())perm+="Pull, ";
+        if(repo.getPush())perm+="Push, ";
 
         int l = perm.length();
         vh.permissions.setText(perm.substring(0,l-2));
@@ -73,7 +79,7 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data==null?0:data.size();
     }
 
     @Override
@@ -87,18 +93,18 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
    _________________________________________________________________________________________________
     */
 
-    public void add(Repo rp) {
+    public void add(RepoModel rp) {
         data.add(rp);
         notifyItemInserted(data.size() - 1);
     }
 
-    public void addAll(List<Repo> rpList) {
-        for (Repo rp : rpList) {
+    public void addAll(List<RepoModel> rpList) {
+        for (RepoModel rp : rpList) {
             add(rp);
         }
     }
 
-    public void remove(Repo rp) {
+    public void remove(RepoModel rp) {
         int position = data.indexOf(rp);
         if (position > -1) {
             data.remove(position);
@@ -120,14 +126,14 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new Repo());
+        add(new RepoModel());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = data.size() - 1;
-        Repo item = getItem(position);
+        RepoModel item = getItem(position);
 
         if (item != null) {
             data.remove(position);
@@ -135,7 +141,7 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public Repo getItem(int position) {
+    public RepoModel getItem(int position) {
         return data.get(position);
     }
 

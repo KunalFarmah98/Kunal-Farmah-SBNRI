@@ -1,25 +1,12 @@
 package com.apps.kunalfarmah.kunalfarmahsbnri.Models;
-
-import android.graphics.Movie;
-
-import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity(tableName = "Repo")
 public class Repo {
-
     @SerializedName("id")
     @Expose
     private int id;
-    @NonNull
-    @PrimaryKey
     @SerializedName("node_id")
     @Expose
     private String nodeId;
@@ -832,13 +819,5 @@ public class Repo {
         this.permissions = permissions;
     }
 
-    public static List<Repo> createRepos(int itemCount) {
-        List<Repo> repos = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Repo repo = repos.get(i);
-            repos.add(repo);
-        }
-        return repos;
-    }
 
 }

@@ -7,22 +7,23 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
 
 import java.util.List;
 
 @Dao
 public interface RepoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Repo repo);
+    void insert(RepoModel repo);
 
-    @Query("SELECT name,description,license,permissions,openIssues from Repo ORDER BY name ASC")
-    LiveData<List<Repo>> getAllRepos();
+    @Query("SELECT * from Repo ORDER BY name ASC")
+    LiveData<List<RepoModel>> getAllRepos();
 
     @Query("DELETE FROM Repo")
     void deleteAll();
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertRepos(List<Repo> repo);
+    void insertRepos(List<RepoModel> repo);
 
 }

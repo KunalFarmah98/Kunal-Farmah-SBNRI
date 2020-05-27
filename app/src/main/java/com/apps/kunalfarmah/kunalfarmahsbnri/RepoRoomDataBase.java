@@ -12,8 +12,9 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
 
-@Database(entities = {Repo.class}, version = 1)
+@Database(entities = {RepoModel.class}, version = 1)
 public abstract class RepoRoomDataBase extends RoomDatabase {
 
     private static RepoRoomDataBase INSTANCE;

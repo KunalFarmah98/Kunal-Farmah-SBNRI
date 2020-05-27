@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
 
 import java.util.List;
 
@@ -39,47 +40,48 @@ public class MainActivity extends AppCompatActivity {
         rv = findViewById(R.id.mainRecycler);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(linearLayoutManager);
+        mAdapter = new RepoAdapter(this);
         rv.setAdapter(mAdapter);
-        rv.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage += 1;
+//        rv.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
+//            @Override
+//            protected void loadMoreItems() {
+//                isLoading = true;
+//                currentPage += 1;
+//
+//                // mocking network delay for API call
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        loadNextPage();
+//                    }
+//                }, 1000);
+//            }
+//
+//            @Override
+//            public int getTotalPageCount() {
+//                return TOTAL_PAGES;
+//            }
+//
+//            @Override
+//            public boolean isLastPage() {
+//                return isLastPage;
+//            }
+//
+//            @Override
+//            public boolean isLoading() {
+//                return isLoading;
+//            }
+//        });
 
-                // mocking network delay for API call
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadNextPage();
-                    }
-                }, 1000);
-            }
-
-            @Override
-            public int getTotalPageCount() {
-                return TOTAL_PAGES;
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        });
-
-        loadFirstPage();
+        //loadFirstPage();
 
 
 
         repoViewModel = ViewModelProviders.of(this).get(RepoViewModel.class);
         progressDialog= ProgressDialog.show(this, "Loading...", "Please wait...", true);
-        repoViewModel.getRepos().observe(this, new Observer<List<Repo>>() {
+        repoViewModel.getRepos().observe(this, new Observer<List<RepoModel>>() {
             @Override
-            public void onChanged(@Nullable List<Repo> resultModels) {
+            public void onChanged(@Nullable List<RepoModel> resultModels) {
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.dismiss();
                 }
@@ -88,27 +90,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadFirstPage() {
-        Log.d(TAG, "loadFirstPage: ");
-        List<Repo> repos = Repo.createRepos(mAdapter.getItemCount());
-        progressBar.setVisibility(View.GONE);
-        mAdapter.addAll(repos);
-
-        if (currentPage <= TOTAL_PAGES) mAdapter.addLoadingFooter();
-        else isLastPage = true;
-
-    }
-
-    private void loadNextPage() {
-        Log.d(TAG, "loadNextPage: " + currentPage);
-        List<Repo> repos = Repo.createRepos(mAdapter.getItemCount());
-
-        mAdapter.removeLoadingFooter();
-        isLoading = false;
-
-        mAdapter.addAll(repos);
-
-        if (currentPage != TOTAL_PAGES) mAdapter.addLoadingFooter();
-        else isLastPage = true;
-    }
+//    private void loadFirstPage() {
+//        Log.d(TAG, "loadFirstPage: ");
+//        List<RepoModel> repos =
+//        progressBar.setVisibility(View.GONE);
+//        mAdapter.addAll(repos);
+//
+//        if (currentPage <= TOTAL_PAGES) mAdapter.addLoadingFooter();
+//        else isLastPage = true;
+//
+//    }
+//
+//    private void loadNextPage() {
+//        Log.d(TAG, "loadNextPage: " + currentPage);
+//        List<RepoModel> repos = RepoModel.createRepos(mAdapter.getItemCount());
+//
+//        mAdapter.removeLoadingFooter();
+//        isLoading = false;
+//
+//        mAdapter.addAll(repos);
+//
+//        if (currentPage != TOTAL_PAGES) mAdapter.addLoadingFooter();
+//        else isLastPage = true;
+//    }
 }

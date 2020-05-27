@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import androidx.lifecycle.LiveData;
 
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
 import com.apps.kunalfarmah.kunalfarmahsbnri.R;
 import com.apps.kunalfarmah.kunalfarmahsbnri.RepoDao;
 import com.apps.kunalfarmah.kunalfarmahsbnri.RepoRoomDataBase;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class RepoRepository {
     private RepoDao repoDao;
-    private LiveData<List<Repo>> repos;
+    private LiveData<List<RepoModel>> repos;
 
     public RepoRepository(Application application){
         RepoRoomDataBase db = RepoRoomDataBase.getInstance(application);
@@ -23,32 +24,32 @@ public class RepoRepository {
         repos = repoDao.getAllRepos();
     }
 
-    public void insert(Repo repo){
+    public void insert(RepoModel repo){
         new InsertRepoAsyncTask(repoDao).execute(repo);
     }
 
-    public LiveData<List<Repo>> getRepos(){
+    public LiveData<List<RepoModel>> getRepos(){
         return repos;
     }
 
-    public static class InsertRepoAsyncTask extends AsyncTask<Repo,Void,Void>{
+    public static class InsertRepoAsyncTask extends AsyncTask<RepoModel,Void,Void>{
         private RepoDao repoDao;
 
         private InsertRepoAsyncTask(RepoDao repoDao){
             this.repoDao=repoDao;
         }
         @Override
-        protected Void doInBackground(Repo... repos) {
+        protected Void doInBackground(RepoModel... repos) {
             repoDao.insert(repos[0]);
             return null;
         }
     }
 
-    public void insertPosts (List<Repo> repolist) {
+    public void insertPosts (List<RepoModel> repolist) {
         new insertAsyncTask(repoDao).execute(repolist);
     }
 
-    private static class insertAsyncTask extends AsyncTask<List<Repo>, Void, Void> {
+    private static class insertAsyncTask extends AsyncTask<List<RepoModel>, Void, Void> {
 
         private RepoDao mAsyncTaskDao;
 
@@ -57,7 +58,7 @@ public class RepoRepository {
         }
 
         @Override
-        protected Void doInBackground(final List<Repo>... params) {
+        protected Void doInBackground(final List<RepoModel>... params) {
             mAsyncTaskDao.insertRepos(params[0]);
             return null;
         }

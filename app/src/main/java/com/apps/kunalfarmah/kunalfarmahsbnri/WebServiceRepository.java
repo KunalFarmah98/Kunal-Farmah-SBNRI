@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.License;
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Permissions;
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,10 +31,11 @@ public class WebServiceRepository {
     Application application;
     final String BASE_URL = "https://api.github.com/orgs/octokit";
 
-    public  WebServiceRepository(Application application){
+    public WebServiceRepository(Application application) {
         this.application = application;
     }
-    private static OkHttpClient providesOkHttpClientBuilder(){
+
+    private static OkHttpClient providesOkHttpClientBuilder() {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         return httpClient.readTimeout(1200, TimeUnit.SECONDS)
@@ -42,11 +44,11 @@ public class WebServiceRepository {
     }
 
 
-    List<Repo> webserviceResponseList = new ArrayList<>();
+    List<RepoModel> webserviceResponseList = new ArrayList<>();
 
-    public LiveData<List<Repo>> providesWebService() {
+    public LiveData<List<RepoModel>> providesWebService() {
 
-        final MutableLiveData<List<Repo>> data = new MutableLiveData<>();
+        final MutableLiveData<List<RepoModel>> data = new MutableLiveData<>();
 
         String response = "";
         try {
@@ -62,7 +64,7 @@ public class WebServiceRepository {
             service.makeRequest().enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.d("Repository","Response::::"+response.body());
+                    Log.d("Repository", "Response::::" + response.body());
                     webserviceResponseList = parseJson(response.body());
                     RepoRepository postRoomDBRepository = new RepoRepository(application);
                     postRoomDBRepository.insertPosts(webserviceResponseList);
@@ -72,22 +74,22 @@ public class WebServiceRepository {
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    Log.d("Repository","Failed:::");
+                    Log.d("Repository", "Failed:::");
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         //  return retrofit.create(Repo.class);
-        return  data;
+        return data;
 
     }
 
+    // saving data in db
+    private List<RepoModel> parseJson(String response) {
 
-    private List<Repo> parseJson(String response) {
-
-        List<Repo> apiResults = new ArrayList<>();
+        List<RepoModel> apiResults = new ArrayList<>();
 
         JSONObject jsonObject;
 
@@ -99,13 +101,12 @@ public class WebServiceRepository {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
 
-                Repo repo = new Repo();
-                String name,description;
+                RepoModel repo = new RepoModel();
+                String name, description;
                 try {
                     name = object.getString("name");
-                            description = object.getString("description");
-                }
-                catch (Exception e){
+                    description = object.getString("description");
+                } catch (Exception e) {
                     name = description = "Not Available";
                 }
 
@@ -116,50 +117,44 @@ public class WebServiceRepository {
                 int opencnt;
                 try {
                     opencnt = object.getInt("open_issues");
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     opencnt = 0;
                 }
 
-                repo.setOpenIssues(opencnt);
-                License license = new License();
+                repo.setOpen_cont(opencnt);
                 JSONObject license_ = object.getJSONObject("licence");
-                String key,lname,lnid,lspdx,url;
+                String lkey, lname, lnid, lspdx, lurl;
                 try {
-                    key = license_.getString("key");
-                            lname = license_.getString("name");
-                            lnid = license_.getString("node_id");
-                            lspdx = license_.getString("MIT");
-                            url = license_.getString("url");
-                }
-                catch (Exception e){
-                    key = lname = lnid = lspdx = url = "Not Avaialble";
+                    lkey = license_.getString("key");
+                    lname = license_.getString("name");
+                    lnid = license_.getString("node_id");
+                    lspdx = license_.getString("MIT");
+                    lurl = license_.getString("url");
+                } catch (Exception e) {
+                    lkey = lname = lnid = lspdx = lurl = "Not Avaialble";
                 }
 
-                license.setKey(key);
-                license.setName(lname);
-                license.setNodeId(lnid);
-                license.setSpdxId(lspdx);
-                license.setUrl(url);
-                repo.setLicense(license);
+                repo.setLkey(lkey);
+                repo.setLname(lname);
+                repo.setLnodeId(lnid);
+                repo.setLspdxId(lspdx);
+                repo.setLurl(lurl);
 
                 JSONObject permissions_ = object.getJSONObject("permissions");
-                Permissions permissions = new Permissions();
-                String admin,push,pull;
+                String admin, push, pull;
 
                 try {
                     admin = permissions_.getString("admin");
                     push = permissions_.getString("push");
                     pull = permissions_.getString("pull");
 
-                }
-                catch (Exception e){
-                    admin=pull=push="Not Defined";
+                } catch (Exception e) {
+                    admin = pull = push = "Not Defined";
                 }
 
-                permissions.setAdmin(admin.equals("true"));
-                permissions.setPush(push.equals("true"));
-                permissions.setPull(pull.equals("true"));
+                repo.setAdmin(admin.equals("true"));
+                repo.setPush(push.equals("true"));
+                repo.setPull(pull.equals("true"));
 
                 apiResults.add(repo);
             }

@@ -5,15 +5,16 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
 
 import java.util.List;
 
 public class RepoViewModel extends AndroidViewModel {
 
     private RepoRepository postRoomDBRepository;
-    private LiveData<List<Repo>> mAllRepos;
+    private LiveData<List<RepoModel>> mAllRepos;
     WebServiceRepository webServiceRepository ;
-    private final LiveData<List<Repo>>  retroObservable;
+    private final LiveData<List<RepoModel>>  retroObservable;
 
     public RepoViewModel(Application application){
         super(application);
@@ -24,7 +25,7 @@ public class RepoViewModel extends AndroidViewModel {
         mAllRepos = postRoomDBRepository.getRepos();
     }
 
-    public LiveData<List<Repo>> getRepos() {
+    public LiveData<List<RepoModel>> getRepos() {
         return mAllRepos;
     }
 }
