@@ -6,9 +6,10 @@ SBNRI  Assignment
 ### Uses RecyclerView to show the items.
 
 ### Uses MVVM pattern for the architecture (View, Viewmodel, Web and Room Repository). 
-Screen Orientation not handeled explicitly, handled internally by lifecycle components
+### Screen Orientation not handeled explicitly, handled internally by lifecycle components. 
+### (so, any crashes while rotating would be due to internal incomaptibility, not due to error in code).
 
-### Added layouts for landscape mode
+### Added layouts for landscape mode.
 
 ### Added pagination to allow the user to scroll down to load more results.
 
@@ -17,4 +18,9 @@ Screen Orientation not handeled explicitly, handled internally by lifecycle comp
 ### Stored the data in Room.
 
 ### Added open_issues_count, license, permissions, name and description field for each cell in the recycler view. Took care of "null" values in API and displayed them appropriately.
+
+<p> <img hspace="10" src="https://github.com/KunalFarmah98/Kunal-Farmah-SBNRI/blob/master/app/src/main/res/raw/port.jpg" width =200 
+  height = 350/>
+ <img hspace="10" src="https://github.com/KunalFarmah98/Kunal-Farmah-SBNRI/blob/master/app/src/main/res/raw/land.jpg" width =350 
+  height = 200/></p>
 
