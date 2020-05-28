@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData;
 
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RepoViewModel extends AndroidViewModel {
 
@@ -18,10 +20,11 @@ public class RepoViewModel extends AndroidViewModel {
     public RepoViewModel(Application application){
         super(application);
         postRoomDBRepository = new RepoRepository(application);
+        // clearing database on first time creation
+        postRoomDBRepository.deleteAll();
         webServiceRepository = new WebServiceRepository(application);
         retroObservable = webServiceRepository.providesWebService(1);
-        //postRoomDBRepository.insertPosts(retroObservable.getValue());
-        mAllRepos = postRoomDBRepository.getRepos();
+        mAllRepos = postRoomDBRepository.getRepos();;
     }
 
     public LiveData<List<RepoModel>> getRepos() {
@@ -30,6 +33,6 @@ public class RepoViewModel extends AndroidViewModel {
 
     void fetchNext(int page){
         retroObservable = webServiceRepository.providesWebService(page);
-        mAllRepos = retroObservable;
+        mAllRepos = postRoomDBRepository.getRepos();
     }
 }

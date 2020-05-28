@@ -12,9 +12,7 @@ import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Permissions;
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +45,7 @@ public class WebServiceRepository {
 
     List<RepoModel> webserviceResponseList = new ArrayList<>();
 
-    public LiveData<List<RepoModel>> providesWebService(int page_number) {
+    public LiveData<List<RepoModel>> providesWebService(final int page_number) {
 
         final MutableLiveData<List<RepoModel>> data = new MutableLiveData<>();
 
@@ -72,9 +70,7 @@ public class WebServiceRepository {
                     webserviceResponseList = parseJson(response.body());
                     Log.d("webServiceResponseList",String.valueOf(webserviceResponseList.size()));
                     RepoRepository postRoomDBRepository = new RepoRepository(application);
-                    for (RepoModel rp: webserviceResponseList) {
-                        postRoomDBRepository.insert(rp);
-                    }
+                    postRoomDBRepository.insertPosts(webserviceResponseList);
                     data.setValue(webserviceResponseList);
 
                 }

@@ -63,4 +63,24 @@ public class RepoRepository {
             return null;
         }
     }
+
+    public void deleteAll(){
+        new deleteAllAsyncTask(repoDao).execute();
+
+    }
+
+    private static class deleteAllAsyncTask extends AsyncTask<List<RepoModel>, Void, Void> {
+
+        private RepoDao mAsyncTaskDao;
+
+        deleteAllAsyncTask(RepoDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final List<RepoModel>... params) {
+            mAsyncTaskDao.deleteAll();
+            return null;
+        }
+    }
 }

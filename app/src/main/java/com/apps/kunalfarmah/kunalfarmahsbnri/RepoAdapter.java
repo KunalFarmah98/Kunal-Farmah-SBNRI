@@ -1,16 +1,20 @@
 package com.apps.kunalfarmah.kunalfarmahsbnri;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Movie;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apps.kunalfarmah.kunalfarmahsbnri.Models.License;
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Permissions;
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
@@ -58,23 +62,42 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        RepoModel repo = data.get(position);
+        final RepoModel repo = data.get(position);
 
         switch (getItemViewType(position)) {
             case ITEM:
                 RepoViewHolder vh = (RepoViewHolder)holder;
+                if(repo.getName()==null || repo.getDescription()==null)
+                    break;
 
                 vh.name.setText(repo.getName());
                 vh.desc.setText(repo.getDescription());
                 vh.issues.setText(String.valueOf(repo.getOpen_cont()));
 
-//                String perm ="";
-//                if(repo.getAdmin())perm+="Admin, ";
-//                if(repo.getPull())perm+="Pull, ";
-//                if(repo.getPush())perm+="Push, ";
-//
-//                int l = perm.length();
-//                vh.permissions.setText(perm.substring(0,l-2));
+                String perm ="";
+                if(repo.getAdmin())perm+="Admin, ";
+                if(repo.getPull())perm+="Pull, ";
+                if(repo.getPush())perm+="Push, ";
+
+                int l = perm.length();
+                vh.permissions.setText(perm.substring(0,l-2));
+
+               vh.licencename.setText(repo.getLname());
+               vh.licenseurl.setText(repo.getLurl());
+               vh.licenseurl.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View view) {
+                       String url = repo.getLurl();
+                       if(url.equalsIgnoreCase("Not Available")){
+                           Toast.makeText(mContext,"Url Not Avaiable",Toast.LENGTH_SHORT).show();
+                           return;
+                       }
+                       Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(repo.getLurl()));
+                       mContext.startActivity(intent);
+                   }
+               });
+
+
                 break;
             case LOADING:
 //                Do nothing
@@ -104,8 +127,9 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void addAll(List<RepoModel> rpList) {
-        for (RepoModel rp : rpList) {
-            add(rp);
+        int ind = (MainActivity.currentPage-1)*10;
+        for (int i=ind; i<rpList.size(); i++) {
+            add(rpList.get(i));
         }
     }
 
@@ -152,13 +176,14 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     public class RepoViewHolder extends RecyclerView.ViewHolder{
-        TextView name,desc,licence,permissions,issues;
+        TextView name,desc,licencename,licenseurl, permissions,issues;
         public RepoViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             desc = itemView.findViewById(R.id.description);
             issues = itemView.findViewById(R.id.issues);
-            licence = itemView.findViewById(R.id.license);
+            licencename = itemView.findViewById(R.id.licensename);
+            licenseurl = itemView.findViewById(R.id.licenseurl);
             permissions  = itemView.findViewById(R.id.permission);
         }
     }

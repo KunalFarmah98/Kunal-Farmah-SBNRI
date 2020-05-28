@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int TOTAL_PAGES = 5;
-    private int currentPage = PAGE_START;
+    public static int currentPage = PAGE_START;
+    public static String lastID = "0";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage += 1;
-
                 // mocking network delay for API call
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean isLoading() {
                 return isLoading;
             }
+
+
         });
 
         repoViewModel = ViewModelProviders.of(this).get(RepoViewModel.class);
@@ -85,18 +87,29 @@ public class MainActivity extends AppCompatActivity {
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.dismiss();
                 }
+                Log.d("onDataChanged","yo");
                 repos = resultModels;
-                mAdapter.addAll(repos);
+                //mAdapter.clear();
+                mAdapter.addAll(resultModels);
+                //lastID = resultModels.get(9).getId();
             }
         });
 
-        loadFirstPage();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadFirstPage();
+            }
+        }, 1000);
     }
+
 
     private void loadFirstPage() {
         Log.d(TAG, "loadFirstPage: ");
         progressBar.setVisibility(View.GONE);
-        mAdapter.addAll(repos);
+        //mAdapter.clear();
+        //mAdapter.addAll(repos);
+        //rv.smoothScrollToPosition(mAdapter.getItemCount());
 
         if (currentPage <= TOTAL_PAGES) mAdapter.addLoadingFooter();
         else isLastPage = true;
@@ -106,13 +119,13 @@ public class MainActivity extends AppCompatActivity {
     private void loadNextPage() {
         Log.d(TAG, "loadNextPage: " + currentPage);
 
-        if (currentPage != TOTAL_PAGES) mAdapter.addLoadingFooter();
-        else isLastPage = true;
-
-        repoViewModel.fetchNext(currentPage);
         mAdapter.removeLoadingFooter();
         isLoading = false;
 
-        mAdapter.addAll(repos);
+        //mAdapter.addAll(repos);
+        repoViewModel.fetchNext(currentPage);
+
+        if (currentPage != TOTAL_PAGES) mAdapter.addLoadingFooter();
+        else isLastPage = true;
     }
 }
