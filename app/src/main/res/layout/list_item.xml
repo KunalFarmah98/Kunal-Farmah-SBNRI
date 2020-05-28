@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-
-    android:background="@android:color/tertiary_text_dark"
-    app:cardCornerRadius="20dp">
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/card_background"
         android:orientation="vertical"
         android:padding="5dp">
 
@@ -29,7 +29,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/colorPrimaryDark" />
+            android:background="@color/colorPrimaryDark"
+            android:padding="5dp" />
 
         <TextView
             android:id="@+id/description"
@@ -39,15 +40,16 @@
             android:layout_gravity="center"
             android:layout_marginBottom="5dp"
             android:padding="10dp"
-            android:textAlignment="center"
             android:text="Desc"
+            android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="15sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/colorPrimaryDark" />
+            android:background="@color/colorPrimaryDark"
+            android:padding="5dp" />
 
         <LinearLayout
             android:id="@+id/open_issue_cnt"
@@ -65,7 +67,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Open Issue Count: "
+                android:text="Open Issues Count: "
                 android:textAlignment="viewEnd"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
@@ -128,7 +130,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/colorPrimaryDark" />
+            android:background="@color/colorPrimaryDark"
+            android:padding="5dp" />
 
         <LinearLayout
             android:id="@+id/license_"

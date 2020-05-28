@@ -1,4 +1,4 @@
-package com.apps.kunalfarmah.kunalfarmahsbnri;
+package com.apps.kunalfarmah.kunalfarmahsbnri.Pagination;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,11 +7,7 @@ public abstract class PaginationScrollListener extends RecyclerView.OnScrollList
 
     LinearLayoutManager layoutManager;
 
-    /**
-     * Supporting only LinearLayoutManager for now.
-     *
-     * @param layoutManager
-     */
+
     public PaginationScrollListener(LinearLayoutManager layoutManager) {
         this.layoutManager = layoutManager;
     }

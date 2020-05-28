@@ -4,161 +4,91 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-
     android:background="@android:color/tertiary_text_dark"
-    app:cardCornerRadius="20dp">
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@drawable/card_background"
+        android:orientation="horizontal"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/name"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:text="Name"
-            android:textColor="@color/colorPrimary"
-            android:textSize="17sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/colorPrimaryDark" />
-
-        <TextView
-            android:id="@+id/description"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="5dp"
-            android:padding="10dp"
-            android:textAlignment="center"
-            android:text="Desc"
-            android:textColor="@android:color/black"
-            android:textSize="15sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/colorPrimaryDark" />
-
         <LinearLayout
-            android:id="@+id/open_issue_cnt"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/issuestv"
+                android:id="@+id/name"
                 style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Open Issue Count: "
-                android:textAlignment="viewEnd"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:layout_gravity="left"
+                android:maxWidth="300dp"
+                android:padding="10dp"
+                android:text="Name"
+                android:textAlignment="viewStart"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/issues"
+                android:id="@+id/description"
                 style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Open Issue Count"
+                android:layout_gravity="left"
+                android:layout_marginBottom="5dp"
+                android:maxWidth="300dp"
+                android:padding="10dp"
+                android:text="Desc"
                 android:textAlignment="viewStart"
                 android:textColor="@android:color/black"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/permissions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/permissionstv"
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Permissions: "
-                android:textAlignment="viewEnd"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/permission"
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Push, Pull, Admin"
-                android:textAlignment="viewStart"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
-
+                android:textSize="15sp" />
         </LinearLayout>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/colorPrimaryDark" />
+            android:id="@+id/sep"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:visibility="visible" />
 
         <LinearLayout
-            android:id="@+id/license_"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/open_issue_cnt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/licensetv"
+                    android:id="@+id/issuestv"
                     style="@style/TextAppearance.AppCompat.Headline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
-                    android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="License: "
+                    android:text="Open Issues Count: "
                     android:textAlignment="viewEnd"
                     android:textColor="@android:color/black"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/licensename"
+                    android:id="@+id/issues"
                     style="@style/TextAppearance.AppCompat.Headline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -167,25 +97,112 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="Name"
+                    android:text="Open Issue Count"
                     android:textAlignment="viewStart"
                     android:textColor="@android:color/black"
                     android:textSize="14sp" />
+
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/licenseurl"
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/permissions"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:text="url"
-                android:textAlignment="viewStart"
-                android:textColor=" #0000EE"
-                android:textSize="14sp"
-                android:textStyle="normal" />
+                android:layout_gravity="left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/permissionstv"
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Permissions: "
+                    android:textAlignment="viewEnd"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/permission"
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Push, Pull, Admin"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/license_"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/licensetv"
+                        style="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="License: "
+                        android:textAlignment="viewEnd"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/licensename"
+                        style="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Name"
+                        android:textAlignment="viewStart"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/licenseurl"
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="url"
+                    android:textAlignment="viewStart"
+                    android:textColor=" #0000EE"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+            </LinearLayout>
 
         </LinearLayout>
 

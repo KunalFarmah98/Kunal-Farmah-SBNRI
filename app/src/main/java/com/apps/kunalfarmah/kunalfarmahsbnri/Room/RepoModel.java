@@ -1,4 +1,4 @@
-package com.apps.kunalfarmah.kunalfarmahsbnri.Models;
+package com.apps.kunalfarmah.kunalfarmahsbnri.Room;
 
 import android.graphics.Movie;
 
@@ -13,9 +13,10 @@ import java.util.List;
 @Entity(tableName = "Repo")
 
 public class RepoModel {
-    public RepoModel(){
+    public RepoModel() {
 
     }
+
     public RepoModel(@NonNull String id, String name, String description, String lkey, String lname, String lspdxId, String lurl, String lnodeId, Boolean admin, Boolean push, Boolean pull, int open_cont) {
         this.id = id;
         this.name = name;

@@ -1,4 +1,4 @@
-package com.apps.kunalfarmah.kunalfarmahsbnri;
+package com.apps.kunalfarmah.kunalfarmahsbnri.Utils;
 
 import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
 

@@ -1,16 +1,13 @@
-package com.apps.kunalfarmah.kunalfarmahsbnri;
+package com.apps.kunalfarmah.kunalfarmahsbnri.Repositories;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.widget.ImageButton;
 
 import androidx.lifecycle.LiveData;
 
-import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
-import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
-import com.apps.kunalfarmah.kunalfarmahsbnri.R;
-import com.apps.kunalfarmah.kunalfarmahsbnri.RepoDao;
-import com.apps.kunalfarmah.kunalfarmahsbnri.RepoRoomDataBase;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Room.RepoModel;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Room.RepoDao;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Room.RepoRoomDataBase;
 
 import java.util.List;
 
@@ -18,26 +15,27 @@ public class RepoRepository {
     private RepoDao repoDao;
     private LiveData<List<RepoModel>> repos;
 
-    public RepoRepository(Application application){
+    public RepoRepository(Application application) {
         RepoRoomDataBase db = RepoRoomDataBase.getInstance(application);
         repoDao = db.RepoDao();
         repos = repoDao.getAllRepos();
     }
 
-    public void insert(RepoModel repo){
+    public void insert(RepoModel repo) {
         new InsertRepoAsyncTask(repoDao).execute(repo);
     }
 
-    public LiveData<List<RepoModel>> getRepos(){
+    public LiveData<List<RepoModel>> getRepos() {
         return repos;
     }
 
-    public static class InsertRepoAsyncTask extends AsyncTask<RepoModel,Void,Void>{
+    public static class InsertRepoAsyncTask extends AsyncTask<RepoModel, Void, Void> {
         private RepoDao repoDao;
 
-        private InsertRepoAsyncTask(RepoDao repoDao){
-            this.repoDao=repoDao;
+        private InsertRepoAsyncTask(RepoDao repoDao) {
+            this.repoDao = repoDao;
         }
+
         @Override
         protected Void doInBackground(RepoModel... repos) {
             repoDao.insert(repos[0]);
@@ -45,7 +43,7 @@ public class RepoRepository {
         }
     }
 
-    public void insertPosts (List<RepoModel> repolist) {
+    public void insertPosts(List<RepoModel> repolist) {
         new insertAsyncTask(repoDao).execute(repolist);
     }
 
@@ -64,7 +62,7 @@ public class RepoRepository {
         }
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         new deleteAllAsyncTask(repoDao).execute();
 
     }

@@ -1,13 +1,10 @@
-package com.apps.kunalfarmah.kunalfarmahsbnri;
+package com.apps.kunalfarmah.kunalfarmahsbnri.Room;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-
-import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
-import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
 
 import java.util.List;
 

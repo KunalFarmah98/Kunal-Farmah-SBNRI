@@ -8,21 +8,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.apps.kunalfarmah.kunalfarmahsbnri.Models.Repo;
-import com.apps.kunalfarmah.kunalfarmahsbnri.Models.RepoModel;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Pagination.PaginationScrollListener;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Pagination.RepoAdapter;
+import com.apps.kunalfarmah.kunalfarmahsbnri.Room.RepoModel;
+import com.apps.kunalfarmah.kunalfarmahsbnri.ViewModels.RepoViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "LOG" ;
+    private static final String TAG = "LOG";
     RecyclerView rv;
     RepoViewModel repoViewModel;
     ProgressDialog progressDialog;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isLastPage = false;
     private int TOTAL_PAGES = 5;
     public static int currentPage = PAGE_START;
-    public static String lastID = "0";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage += 1;
-                // mocking network delay for API call
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -80,18 +80,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         repoViewModel = ViewModelProviders.of(this).get(RepoViewModel.class);
-        progressDialog= ProgressDialog.show(this, "Loading...", "Please wait...", true);
+        progressDialog = ProgressDialog.show(this, "Loading...", "Please wait...", true);
         repoViewModel.getRepos().observe(this, new Observer<List<RepoModel>>() {
             @Override
             public void onChanged(@Nullable List<RepoModel> resultModels) {
-                if(progressDialog!=null && progressDialog.isShowing()){
+                if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-                Log.d("onDataChanged","yo");
+//                Log.d("onDataChanged","entered");
                 repos = resultModels;
-                //mAdapter.clear();
                 mAdapter.addAll(resultModels);
-                //lastID = resultModels.get(9).getId();
             }
         });
 
@@ -105,26 +103,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void loadFirstPage() {
-        Log.d(TAG, "loadFirstPage: ");
+//        Log.d(TAG, "loadFirstPage: ");
         progressBar.setVisibility(View.GONE);
-        //mAdapter.clear();
-        //mAdapter.addAll(repos);
-        //rv.smoothScrollToPosition(mAdapter.getItemCount());
-
         if (currentPage <= TOTAL_PAGES) mAdapter.addLoadingFooter();
         else isLastPage = true;
 
     }
 
     private void loadNextPage() {
-        Log.d(TAG, "loadNextPage: " + currentPage);
-
+//        Log.d(TAG, "loadNextPage: " + currentPage);
         mAdapter.removeLoadingFooter();
         isLoading = false;
-
-        //mAdapter.addAll(repos);
         repoViewModel.fetchNext(currentPage);
-
         if (currentPage != TOTAL_PAGES) mAdapter.addLoadingFooter();
         else isLastPage = true;
     }

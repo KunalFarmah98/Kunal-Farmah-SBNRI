@@ -1,4 +1,4 @@
-package com.apps.kunalfarmah.kunalfarmahsbnri;
+package com.apps.kunalfarmah.kunalfarmahsbnri.ViewModels;
 
 import android.app.Application;
 
