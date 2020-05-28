@@ -1,6 +1,7 @@
 package com.apps.kunalfarmah.kunalfarmahsbnri;
 
 import android.app.Application;
+import android.location.LocationListener;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -29,7 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WebServiceRepository {
     Application application;
-    final String BASE_URL = "https://api.github.com/orgs/octokit";
+    final String BASE_URL = "https://api.github.com/orgs/octokit/";
 
     public WebServiceRepository(Application application) {
         this.application = application;
@@ -46,7 +47,7 @@ public class WebServiceRepository {
 
     List<RepoModel> webserviceResponseList = new ArrayList<>();
 
-    public LiveData<List<RepoModel>> providesWebService() {
+    public LiveData<List<RepoModel>> providesWebService(int page_number) {
 
         final MutableLiveData<List<RepoModel>> data = new MutableLiveData<>();
 
@@ -58,22 +59,29 @@ public class WebServiceRepository {
                     .client(providesOkHttpClientBuilder())
                     .build();
 
+
             //Defining retrofit api service
             APIService service = retrofit.create(APIService.class);
-            //  response = service.makeRequest().execute().body();
-            service.makeRequest().enqueue(new Callback<String>() {
+            //Call<Repo> call = service.makeRequest(page_number,10);
+
+            service.makeRequest(page_number,10).enqueue(new Callback<List<Repo>>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
+                    Log.d("url", String.valueOf(call.request().url()));
                     Log.d("Repository", "Response::::" + response.body());
                     webserviceResponseList = parseJson(response.body());
+                    Log.d("webServiceResponseList",String.valueOf(webserviceResponseList.size()));
                     RepoRepository postRoomDBRepository = new RepoRepository(application);
-                    postRoomDBRepository.insertPosts(webserviceResponseList);
+                    for (RepoModel rp: webserviceResponseList) {
+                        postRoomDBRepository.insert(rp);
+                    }
                     data.setValue(webserviceResponseList);
 
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
+                public void onFailure(Call<List<Repo>> call, Throwable t) {
+                    Log.d("url", String.valueOf(call.request().url()));
                     Log.d("Repository", "Failed:::");
                 }
             });
@@ -87,25 +95,19 @@ public class WebServiceRepository {
     }
 
     // saving data in db
-    private List<RepoModel> parseJson(String response) {
+    private List<RepoModel> parseJson(List<Repo> response) {
 
         List<RepoModel> apiResults = new ArrayList<>();
 
-        JSONObject jsonObject;
 
-        JSONArray jsonArray;
-
-        try {
-            jsonArray = new JSONArray(response);
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject object = jsonArray.getJSONObject(i);
-
+            for (int i = 0; i < response.size(); i++) {
+                Repo object = response.get(i);
                 RepoModel repo = new RepoModel();
+                repo.setId(object.getNodeId());
                 String name, description;
                 try {
-                    name = object.getString("name");
-                    description = object.getString("description");
+                    name = object.getName();
+                    description = object.getDescription();
                 } catch (Exception e) {
                     name = description = "Not Available";
                 }
@@ -116,20 +118,20 @@ public class WebServiceRepository {
 
                 int opencnt;
                 try {
-                    opencnt = object.getInt("open_issues");
+                    opencnt = object.getOpenIssues();
                 } catch (Exception e) {
                     opencnt = 0;
                 }
 
                 repo.setOpen_cont(opencnt);
-                JSONObject license_ = object.getJSONObject("licence");
+                License license_ = object.getLicense();
                 String lkey, lname, lnid, lspdx, lurl;
                 try {
-                    lkey = license_.getString("key");
-                    lname = license_.getString("name");
-                    lnid = license_.getString("node_id");
-                    lspdx = license_.getString("MIT");
-                    lurl = license_.getString("url");
+                    lkey = license_.getKey();
+                    lname = license_.getName();
+                    lnid = license_.getNodeId();
+                    lspdx = license_.getSpdxId();
+                    lurl = license_.getUrl();
                 } catch (Exception e) {
                     lkey = lname = lnid = lspdx = lurl = "Not Avaialble";
                 }
@@ -140,29 +142,26 @@ public class WebServiceRepository {
                 repo.setLspdxId(lspdx);
                 repo.setLurl(lurl);
 
-                JSONObject permissions_ = object.getJSONObject("permissions");
-                String admin, push, pull;
+                Permissions permissions_ = object.getPermissions();
+                boolean admin, push, pull;
 
                 try {
-                    admin = permissions_.getString("admin");
-                    push = permissions_.getString("push");
-                    pull = permissions_.getString("pull");
+                    admin = permissions_.isAdmin();
+                    push = permissions_.isPush();
+                    pull = permissions_.isPull();
 
                 } catch (Exception e) {
-                    admin = pull = push = "Not Defined";
+                    admin = pull = push = false;
                 }
 
-                repo.setAdmin(admin.equals("true"));
-                repo.setPush(push.equals("true"));
-                repo.setPull(pull.equals("true"));
+                repo.setAdmin(admin);
+                repo.setPush(push);
+                repo.setPull(pull);
 
                 apiResults.add(repo);
+                Log.d("Entry"+String.valueOf(i), apiResults.get(i).getName() + apiResults.get(i).getPush()
+                +apiResults.get(i).getPull()+apiResults.get(i).getAdmin());
             }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         Log.i(getClass().getSimpleName(), String.valueOf(apiResults.size()));
         return apiResults;

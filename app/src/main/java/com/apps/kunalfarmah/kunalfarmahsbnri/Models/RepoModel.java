@@ -34,6 +34,7 @@ public class RepoModel {
     @NonNull
     @PrimaryKey
     String id;
+
     String name, description;
     String lkey, lname, lspdxId, lurl, lnodeId;
     Boolean admin, push, pull;

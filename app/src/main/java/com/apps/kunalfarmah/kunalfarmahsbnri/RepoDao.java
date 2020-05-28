@@ -16,7 +16,7 @@ public interface RepoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(RepoModel repo);
 
-    @Query("SELECT * from Repo ORDER BY name ASC")
+    @Query("SELECT * from Repo")
     LiveData<List<RepoModel>> getAllRepos();
 
     @Query("DELETE FROM Repo")

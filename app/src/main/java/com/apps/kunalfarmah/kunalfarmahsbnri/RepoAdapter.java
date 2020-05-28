@@ -59,22 +59,27 @@ public class RepoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         RepoModel repo = data.get(position);
-        if(ITEM==LOADING)return;
 
-        RepoViewHolder vh = (RepoViewHolder)holder;
+        switch (getItemViewType(position)) {
+            case ITEM:
+                RepoViewHolder vh = (RepoViewHolder)holder;
 
-        vh.name.setText(repo.getName());
-        vh.desc.setText(repo.getDescription());
-        vh.issues.setText(repo.getOpen_cont());
+                vh.name.setText(repo.getName());
+                vh.desc.setText(repo.getDescription());
+                vh.issues.setText(String.valueOf(repo.getOpen_cont()));
 
-        String perm ="";
-        if(repo.getAdmin())perm+="Admin, ";
-        if(repo.getPull())perm+="Pull, ";
-        if(repo.getPush())perm+="Push, ";
-
-        int l = perm.length();
-        vh.permissions.setText(perm.substring(0,l-2));
-
+//                String perm ="";
+//                if(repo.getAdmin())perm+="Admin, ";
+//                if(repo.getPull())perm+="Pull, ";
+//                if(repo.getPush())perm+="Push, ";
+//
+//                int l = perm.length();
+//                vh.permissions.setText(perm.substring(0,l-2));
+                break;
+            case LOADING:
+//                Do nothing
+                break;
+        }
     }
 
     @Override
