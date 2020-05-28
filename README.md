@@ -6,7 +6,7 @@ SBNRI  Assignment
 ### Uses RecyclerView to show the items.
 
 ### Uses MVVM pattern for the architecture (View, Viewmodel, Web and Room Repository). 
-### Screen Orientation not handeled explicitly, handled internally by lifecycle components. 
+### Screen Orientation not handled explicitly, handled internally by lifecycle components. 
 ### (so, any crashes while rotating would be due to internal incomaptibility, not due to error in code).
 
 ### Added layouts for landscape mode.
